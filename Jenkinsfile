@@ -7,14 +7,7 @@ pipeline {
     }
     environment {
         CI = 'true'
-        script {
-            if(env.BRANCH_NAME == 'development') {
-                DELIVERY_SCRIPT = './jenkins/scripts/deliver-for-development.sh'
-            }
-            if(env.BRANCH_NAME == 'production') {
-                DELIVERY_SCRIPT = './jenkins/scripts/deploy-for-production.sh'
-            }
-       }
+        DEPLOY_TARGET = "${env.BRANCH_NAME}"
     }
     stages {
         stage('Build') {
@@ -32,8 +25,8 @@ pipeline {
                 branch 'development'
             }
             steps {
-                echo '${DELIVERY_SCRIPT}'
-                sh './jenkins/scripts/deliver-for-development.sh'
+                echo '${DEPLOY_TARGET}'
+                sh './jenkins/scripts/deliver-for-$DEPLOY_TARGET.sh'
                 input message: 'Finished using the web site? (Click "Proceed" to continue)'
                 sh './jenkins/scripts/kill.sh'
             }
@@ -43,7 +36,6 @@ pipeline {
                 branch 'production'
             }
             steps {
-                echo '${DELIVERY_SCRIPT}'
                 sh './jenkins/scripts/deploy-for-production.sh'
                 input message: 'Finished using the web site? (Click "Proceed" to continue)'
                 sh './jenkins/scripts/kill.sh'
