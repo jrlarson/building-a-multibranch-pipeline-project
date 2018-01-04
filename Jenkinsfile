@@ -7,11 +7,11 @@ pipeline {
     }
     environment {
         CI = 'true'
-        echo ${env.BRANCH_NAME}
     }
     stages {
         stage('Build') {
             steps {
+                echo ${env.BRANCH_NAME}
                 sh 'npm install'
             }
         }
