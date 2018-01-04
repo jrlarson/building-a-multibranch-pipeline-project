@@ -8,10 +8,10 @@ pipeline {
     environment {
         CI = 'true'
         script {
-            if(${env.BRANCH_NAME} == 'development') {
+            if(env.BRANCH_NAME == 'development') {
                 DELIVERY_SCRIPT = './jenkins/scripts/deliver-for-development.sh'
             }
-            if(${env.BRANCH_NAME} == 'production') {
+            if(env.BRANCH_NAME == 'production') {
                 DELIVERY_SCRIPT = './jenkins/scripts/deploy-for-production.sh'
             }
        }
