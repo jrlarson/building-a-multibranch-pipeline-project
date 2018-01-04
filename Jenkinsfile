@@ -31,8 +31,8 @@ pipeline {
                         CREDENTIALS = 'producer'
                     }
                 }
-                echo '${CREDENTIALS}'
-                echo '${DEPLOY_TARGET}'
+                echo '$CREDENTIALS'
+                echo '$DEPLOY_TARGET'
                 sh './jenkins/scripts/deploy-for-$DEPLOY_TARGET.sh'
                 input message: 'Finished using the web site? (Click "Proceed" to continue)'
                 sh './jenkins/scripts/kill.sh'
