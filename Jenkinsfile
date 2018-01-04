@@ -7,8 +7,7 @@ pipeline {
     }
     environment {
         CI = 'true'
-        DEPLOY_ENV = "${env.BRANCH_NAME}"
-        echo DEPLOY_ENV
+        echo ${env.BRANCH_NAME}
     }
     stages {
         stage('Build') {
