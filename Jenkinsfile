@@ -8,14 +8,6 @@ pipeline {
     environment {
         CI = 'true'
         DEPLOY_TARGET = "${env.BRANCH_NAME}"
-        script {
-            if( $DEPLOY_TARGET == 'develop') {
-                CREDENTIALS = 'developer'
-            }
-            if( $DEPLOY_TARGET == 'production') {
-                CREDENTIALS = 'producer'
-            }
-        }
     }
     stages {
         stage('Build') {
@@ -31,6 +23,14 @@ pipeline {
         stage('Deliver for environment') {
             when { anyOf { branch 'development'; branch 'production' } }
             steps {
+                script {
+                    if( $DEPLOY_TARGET == 'develop') {
+                        CREDENTIALS = 'developer'
+                    }
+                    if( $DEPLOY_TARGET == 'production') {
+                        CREDENTIALS = 'producer'
+                    }
+                }
                 echo '$CREDENTIALS'
                 echo '$DEPLOY_TARGET'
                 sh './jenkins/scripts/deploy-for-$DEPLOY_TARGET.sh'
