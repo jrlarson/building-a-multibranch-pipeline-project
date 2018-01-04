@@ -24,15 +24,15 @@ pipeline {
             when { anyOf { branch 'development'; branch 'production' } }
             steps {
                 script {
-                    if( $DEPLOY_TARGET == 'develop') {
+                    if( ${DEPLOY_TARGET} == 'develop') {
                         CREDENTIALS = 'developer'
                     }
-                    if( $DEPLOY_TARGET == 'production') {
+                    if( ${DEPLOY_TARGET} == 'production') {
                         CREDENTIALS = 'producer'
                     }
                 }
                 echo '$CREDENTIALS'
-                echo '$DEPLOY_TARGET'
+                echo '${DEPLOY_TARGET}'
                 sh './jenkins/scripts/deploy-for-$DEPLOY_TARGET.sh'
                 input message: 'Finished using the web site? (Click "Proceed" to continue)'
                 sh './jenkins/scripts/kill.sh'
