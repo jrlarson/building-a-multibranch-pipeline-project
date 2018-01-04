@@ -24,10 +24,10 @@ pipeline {
             when { anyOf { branch 'development'; branch 'production' } }
             steps {
                 script {
-                    if( ${DEPLOY_TARGET} == 'develop') {
+                    if( DEPLOY_TARGET == 'develop') {
                         CREDENTIALS = 'developer'
                     }
-                    if( ${DEPLOY_TARGET} == 'production') {
+                    if( DEPLOY_TARGET == 'production') {
                         CREDENTIALS = 'producer'
                     }
                 }
