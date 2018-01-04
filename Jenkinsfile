@@ -24,11 +24,11 @@ pipeline {
             when { anyOf { branch 'development'; branch 'production' } }
             steps {
                 script {
-                    if( DEPLOY_TARGET == 'develop') {
-                        CREDENTIALS = 'developer'
+                    if( $DEPLOY_TARGET == 'develop') {
+                        $CREDENTIALS = 'developer'
                     }
-                    if( DEPLOY_TARGET == 'production') {
-                        CREDENTIALS = 'producer'
+                    if( $DEPLOY_TARGET == 'production') {
+                        $CREDENTIALS = 'producer'
                     }
                 }
                 echo '$CREDENTIALS'
