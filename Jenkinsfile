@@ -10,8 +10,9 @@ pipeline {
         DEPLOY_TARGET = "${env.BRANCH_NAME}"
         DEPLOY_TYPE = 'default'
         DEPLOY_URL = ''
-        CREDENTIAL_ID = 'PIPELINE_PROJ'
-        CREDENTIALS = credentials("${CREDENTIAL_ID}")
+        CREDENTIAL_ID_DEVELOP = 'PIPELINE_PROJ'
+        CREDENTIAL_ID_PROD = 'PIPELINE_PROJ_PROD'
+        CREDENTIALS = credentials("${CREDENTIAL_ID_DEVELOP}")
     }
     stages {
         stage('Build') {
@@ -33,6 +34,7 @@ pipeline {
                     }
                     if( DEPLOY_TARGET == 'production') {
                         DEPLOY_TYPE = 'producer'
+                        CREDENTIALS = credentials("${CREDENTIAL_ID_PROD}")
                     }
                     DEPLOY_URL = "https://${DEPLOY_TYPE}.scm.ase1stage.azurenon.nml.com/api/zipdeploy"
                 }
