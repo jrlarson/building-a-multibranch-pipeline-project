@@ -8,6 +8,7 @@ pipeline {
     environment {
         CI = 'true'
         DEPLOY_TARGET = "${env.BRANCH_NAME}"
+        CREDENTIALS = 'default'
     }
     stages {
         stage('Build') {
@@ -24,15 +25,15 @@ pipeline {
             when { anyOf { branch 'development'; branch 'production' } }
             steps {
                 script {
-                    if( ${DEPLOY_TARGET} == 'develop') {
-                        $CREDENTIALS = 'developer'
+                    if( DEPLOY_TARGET == 'develop') {
+                        CREDENTIALS = 'developer'
                     }
-                    if( $DEPLOY_TARGET == 'production') {
-                        $CREDENTIALS = 'producer'
+                    if( DEPLOY_TARGET == 'production') {
+                        CREDENTIALS = 'producer'
                     }
                 }
-                echo '$CREDENTIALS'
-                echo '$DEPLOY_TARGET'
+                sh "echo $CREDENTIALS"
+                sh "echo $DEPLOY_TARGET"
                 sh './jenkins/scripts/deploy-for-$DEPLOY_TARGET.sh'
                 input message: 'Finished using the web site? (Click "Proceed" to continue)'
                 sh './jenkins/scripts/kill.sh'
