@@ -9,6 +9,7 @@ pipeline {
         CI = 'true'
         DEPLOY_TARGET = "${env.BRANCH_NAME}"
         CREDENTIALS = 'default'
+        DEPLOY_URL = ''
     }
     stages {
         stage('Build') {
@@ -31,9 +32,11 @@ pipeline {
                     if( DEPLOY_TARGET == 'production') {
                         CREDENTIALS = 'producer'
                     }
+                    DEPLOY_URL = "https://${CREDENTIALS}.scm.ase1stage.azurenon.nml.com/api/zipdeploy"
                 }
                 sh "echo $CREDENTIALS"
                 sh "echo $DEPLOY_TARGET"
+                sh "echo $DEPLOY_URL"
                 sh './jenkins/scripts/deploy-for-$DEPLOY_TARGET.sh'
                 input message: 'Finished using the web site? (Click "Proceed" to continue)'
                 sh './jenkins/scripts/kill.sh'
