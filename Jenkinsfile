@@ -15,6 +15,20 @@ pipeline {
         CREDENTIALS = credentials("${CREDENTIAL_ID_DEVELOP}")
     }
     stages {
+        stage('Setup') {
+            steps {
+                script {
+                    if( DEPLOY_TARGET == 'development') {
+                        DEPLOY_TYPE = 'developer'
+                    }
+                    if( DEPLOY_TARGET == 'production') {
+                        DEPLOY_TYPE = 'producer'
+                        CREDENTIALS = credentials("${CREDENTIAL_ID_PROD}")
+                    }
+                    DEPLOY_URL = "https://${DEPLOY_TYPE}.scm.ase1stage.azurenon.nml.com/api/zipdeploy"
+                }
+            }
+        }
         stage('Build') {
             steps {
                 sh 'npm install'
@@ -28,16 +42,6 @@ pipeline {
         stage('Deliver for environment') {
             when { anyOf { branch 'development'; branch 'production' } }
             steps {
-                script {
-                    if( DEPLOY_TARGET == 'development') {
-                        DEPLOY_TYPE = 'developer'
-                    }
-                    if( DEPLOY_TARGET == 'production') {
-                        DEPLOY_TYPE = 'producer'
-                        CREDENTIALS = credentials("${CREDENTIAL_ID_PROD}")
-                    }
-                    DEPLOY_URL = "https://${DEPLOY_TYPE}.scm.ase1stage.azurenon.nml.com/api/zipdeploy"
-                }
                 sh "echo $DEPLOY_TYPE"
                 sh "echo $DEPLOY_TARGET"
                 sh "echo $DEPLOY_URL"
