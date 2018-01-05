@@ -15,7 +15,7 @@ pipeline {
         CREDENTIALS = credentials("${CREDENTIAL_ID_DEVELOP}")
     }
     stages {
-        stage('Setup') {
+        stage('Initialize Deployment Parameters') {
             steps {
                 script {
                     if( DEPLOY_TARGET == 'development') {
