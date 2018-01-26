@@ -13,22 +13,18 @@ pipeline {
         CREDENTIAL_ID_DEVELOP = 'PIPELINE_PROJ'
         CREDENTIAL_ID_PROD = 'PIPELINE_PROJ_PROD'
         CREDENTIALS = credentials("${CREDENTIAL_ID_DEVELOP}")
+        script {
+            if( DEPLOY_TARGET == 'development') {
+                DEPLOY_TYPE = 'developer'
+            }
+            if( DEPLOY_TARGET == 'production') {
+                DEPLOY_TYPE = 'producer'
+                CREDENTIALS = credentials("${CREDENTIAL_ID_PROD}")
+            }
+            DEPLOY_URL = "https://${DEPLOY_TYPE}.scm.ase1stage.azurenon.nml.com/api/zipdeploy"
+        }
     }
     stages {
-        stage('Initialize Deployment Parameters') {
-            steps {
-                script {
-                    if( DEPLOY_TARGET == 'development') {
-                        DEPLOY_TYPE = 'developer'
-                    }
-                    if( DEPLOY_TARGET == 'production') {
-                        DEPLOY_TYPE = 'producer'
-                        CREDENTIALS = credentials("${CREDENTIAL_ID_PROD}")
-                    }
-                    DEPLOY_URL = "https://${DEPLOY_TYPE}.scm.ase1stage.azurenon.nml.com/api/zipdeploy"
-                }
-            }
-        }
         stage('Build') {
             steps {
                 sh 'npm install'
