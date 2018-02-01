@@ -32,6 +32,7 @@ pipeline {
                     rawBuildNum = lastAPIBuild.substring(firstChar+1,lastChar)
                     echo rawBuildNum
                 }
+                echo "Last Successful API Build: ${rawBuildNum}"
             }
         }
         stage('Build') {
