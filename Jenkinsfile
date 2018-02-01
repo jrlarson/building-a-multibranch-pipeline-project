@@ -26,7 +26,7 @@ pipeline {
                         CREDENTIALS = credentials("${CREDENTIAL_ID_PROD}")
                     }
                     DEPLOY_URL = "https://${DEPLOY_TYPE}.scm.ase1stage.azurenon.nml.com/api/zipdeploy"
-                    lastAPIBuild = "<number>86</number>"
+                    lastAPIBuild = "<number>867742</number>"
                     firstChar = lastAPIBuild.indexOf('>')
                     lastChar = lastAPIBuild.lastIndexOf('<')
                     rawBuildNum = lastAPIBuild.substring(firstChar+1,lastChar)
